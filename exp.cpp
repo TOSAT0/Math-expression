@@ -27,16 +27,37 @@ string ftos(float n){
 
 int main(void){
 	string exp;
+	
+	int minus = 0, sign_index;
+	char sign;
+	
 	int start = 0, end = -1, op = -1;
 	float n1, n2, res;
 	
 	cout<<"Expression: "<<endl;
 	cin>>exp;
 	
-	for(int i=0; i<exp.size(); ++i){
+	int i = 0;
+	while(i < exp.size()){
+		if(exp[i] == '+' || exp[i] == '-'){
+			sign_index = i;
+			while(exp[i] == '+' || exp[i] == '-'){
+				if(exp[i] == '-') minus++;
+				i++;
+			}
+			sign = minus%2 == 0 ? '+' : '-';
+			exp = exp.substr(0,sign_index) + sign + exp.substr(i, exp.size() - i);
+			i -= i - sign_index - 1;
+		}
+		i++;
+	}
+	
+	cout<<exp<<endl;
+	
+	/*for(int i = 0; i < exp.size(); ++i){
 		
 		// GET POINTERS
-		if(exp[i] == '+' || exp[i] == '-'){
+		if(exp[i] == '+' || exp[i] == '-' || exp[i] == '*' || exp[i] == '/'){
 			if(op == -1) op = i;
 			else end = i-1;
 		}
@@ -63,5 +84,5 @@ int main(void){
 			end = -1;
 			i = 0;
 		}
-	}
+	}*/
 }
