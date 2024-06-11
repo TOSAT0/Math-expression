@@ -19,6 +19,12 @@ float operation(float n1, float n2, char op){
 	}
 }
 
+string ftos(float n){
+	stringstream s;
+	s<<n;
+	return s.str();
+}
+
 int main(void){
 	string exp;
 	int start = 0, end = -1, op = -1;
@@ -28,21 +34,34 @@ int main(void){
 	cin>>exp;
 	
 	for(int i=0; i<exp.size(); ++i){
+		
+		// GET POINTERS
 		if(exp[i] == '+' || exp[i] == '-'){
 			if(op == -1) op = i;
 			else end = i-1;
 		}
-		if(i == exp.size() - 1) end = i;
+		if(i == exp.size() - 1 && op != -1) end = i;
 		
 		cout<<"exp["<<i<<"]: "<<exp[i]<<" - start: "<<start<<" - op: "<<op<<" - end: "<<end<<endl;	//TODO: remove
 		
+		// OPERATION
 		if(end != -1){
 			string sn1 = exp.substr(start, op-start);	//substring n1
 			string sn2 = exp.substr(op+1, end-op);		//substring n2
 			n1 = atof(sn1.c_str());						//string to float n1
 			n2 = atof(sn2.c_str());						//string to float n2
 			res = operation(n1, n2, exp[op]);			//operation
+			
 			cout<<"n1: "<<n1<<" - n2: "<<n2<<" - res: "<<res<<endl;									// TODO: remove
+			
+			exp = exp.substr(0, start) + ftos(res) + exp.substr(end+1, exp.size() - end - 1);
+			
+			cout<<"exp: "<<exp<<endl;																// TODO: remove
+			
+			start = 0;
+			op = -1;
+			end = -1;
+			i = 0;
 		}
 	}
 }
